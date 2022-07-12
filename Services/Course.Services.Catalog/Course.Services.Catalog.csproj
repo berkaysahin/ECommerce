@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.16.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,10 +17,13 @@
     <None Remove="MongoDB.Driver" />
     <None Remove="Models\" />
     <None Remove="DTOs\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
+    <None Remove="Mapping\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
     <Folder Include="DTOs\" />
+    <Folder Include="Mapping\" />
   </ItemGroup>
 </Project>

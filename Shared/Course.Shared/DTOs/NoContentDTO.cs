@@ -1,9 +1,10 @@
-﻿namespace Course.Shared.DTOs;
-
-public class NoContentDTO
+﻿namespace Course.Shared.DTOs
 {
-    public NoContentDTO()
+    public class NoContentDTO
     {
+        public NoContentDTO()
+        {
 
+        }
     }
 }
