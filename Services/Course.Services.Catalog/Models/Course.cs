@@ -23,10 +23,10 @@ public class Course
     [BsonRepresentation(BsonType.DateTime)]
     public DateTime CreatedTime { get; set; }
 
+    public Feature Feature { get; set; }
+
     [BsonRepresentation(BsonType.ObjectId)]
     public string CategoryId { get; set; }
-
-    public Feature Feature { get; set; }
 
     [BsonIgnore]
     public Category Category { get; set; }

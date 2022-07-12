@@ -15,9 +15,11 @@
     <None Remove="Controllers\" />
     <None Remove="MongoDB.Driver" />
     <None Remove="Models\" />
+    <None Remove="DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+    <Folder Include="DTOs\" />
   </ItemGroup>
 </Project>
