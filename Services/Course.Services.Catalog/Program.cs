@@ -1,9 +1,13 @@
-﻿using Course.Services.Catalog.Settings;
+﻿using Course.Services.Catalog.Interfaces;
+using Course.Services.Catalog.Services;
+using Course.Services.Catalog.Settings;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();

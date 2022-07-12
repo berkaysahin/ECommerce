@@ -1,6 +1,6 @@
 ﻿namespace Course.Services.Catalog.DTOs;
 
-public class CategoryDTO
+internal class CategoryDTO
 {
     public string Id { get; set; }
 
