@@ -24,4 +24,7 @@
   <ItemGroup>
     <Folder Include="Services\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Services\Catalog\ECommerce.Services.Catalog\ECommerce.Services.Catalog.csproj" />
+  </ItemGroup>
 </Project>
