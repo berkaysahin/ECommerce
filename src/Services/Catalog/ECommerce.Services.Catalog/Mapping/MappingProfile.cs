@@ -4,15 +4,15 @@ using ECommerce.Services.Catalog.Models;
 
 namespace ECommerce.Services.Catalog.Mapping;
 
-public class GeneralMapping : Profile
+public class MappingProfile : Profile
 {
-    public GeneralMapping()
+    public MappingProfile()
     {
-        CreateMap<Models.Course, CourseDTO>().ReverseMap();
+        CreateMap<Course, CourseDTO>().ReverseMap();
+        CreateMap<Course, CourseCreateDTO>().ReverseMap();
+        CreateMap<Course, CourseUpdateDTO>().ReverseMap();
+
         CreateMap<Category, CategoryDTO>().ReverseMap();
         CreateMap<Feature, FeatureDTO>().ReverseMap();
-
-        CreateMap<Models.Course, CourseCreateDTO>().ReverseMap();
-        CreateMap<Models.Course, CourseUpdateDTO>().ReverseMap();
     }
 }

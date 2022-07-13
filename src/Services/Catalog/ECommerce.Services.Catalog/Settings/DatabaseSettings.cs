@@ -1,4 +1,6 @@
-﻿namespace ECommerce.Services.Catalog.Settings;
+﻿using ECommerce.Services.Catalog.Interfaces;
+
+namespace ECommerce.Services.Catalog.Settings;
 
 public class DatabaseSettings : IDatabaseSettings
 {

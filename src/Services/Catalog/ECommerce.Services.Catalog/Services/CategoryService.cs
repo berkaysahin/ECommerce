@@ -8,35 +8,35 @@ using MongoDB.Driver;
 
 namespace ECommerce.Services.Catalog.Services;
 
-internal class CategoryService : ICategoryService
+public class CategoryService : ICategoryService
 {
-    private readonly IMongoCollection<Category> _categoryCollection;
+    private readonly IMongoDbClient<Category> _mongoDb;
     private readonly IMapper _mapper;
 
-    public CategoryService(IMapper mapper, IDatabaseSettings databaseSettings)
+    public CategoryService(IMapper mapper, IMongoDbClient<Category> mongoDbClient)
     {
-        var client = new MongoClient(databaseSettings.ConnectionString);
-        var database = client.GetDatabase(databaseSettings.DatabaseName);
+        _mongoDb = mongoDbClient;
+        _mongoDb.Setup("Categories");
 
-        _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
         _mapper = mapper;
     }
 
     public async Task<Response<List<CategoryDTO>>> GetAllAsync()
     {
-        var categories = await _categoryCollection.Find(category => true).ToListAsync();
-        return Response<List<CategoryDTO>>.Success(_mapper.Map<List<CategoryDTO>>(categories), 200);
+        var categories = await _mongoDb.FindAsync(category => true);
+        var data = _mapper.Map<List<CategoryDTO>>(categories);
+        return Response<List<CategoryDTO>>.Success(data, 200);
     }
 
     public async Task<Response<CategoryDTO>> CreateAsync(Category category)
     {
-        await _categoryCollection.InsertOneAsync(category);
+        await _mongoDb.InsertOneAsync(category);
         return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
     }
 
     public async Task<Response<CategoryDTO>> GetByIdAsync(string id)
     {
-        var category = await _categoryCollection.Find<Category>(category => category.Id == id).FirstOrDefaultAsync();
+        var category = (await _mongoDb.FindAsync(category => category.Id == id)).FirstOrDefault();
 
         if (category is null)
             return Response<CategoryDTO>.Fail("Category not found", 404);

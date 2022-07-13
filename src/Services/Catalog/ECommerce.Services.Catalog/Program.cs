@@ -1,15 +1,25 @@
-﻿using ECommerce.Services.Catalog.Interfaces;
+﻿using AutoMapper;
+using ECommerce.Services.Catalog.Interfaces;
+using ECommerce.Services.Catalog.Mapping;
 using ECommerce.Services.Catalog.Services;
 using ECommerce.Services.Catalog.Settings;
+using ECommerce.Services.Catalog.Storage;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+var config = new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new MappingProfile());
+});
 
-builder.Services.AddAutoMapper(typeof(Program));
+var mapper = config.CreateMapper();
+
+builder.Services.AddSingleton(mapper);
+
+
 builder.Services.AddControllers();
 
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
@@ -18,6 +28,10 @@ builder.Services.AddSingleton<IDatabaseSettings>(sp =>
 {
     return sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
 });
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddScoped(typeof(IMongoDbClient<>), typeof(MongoDbClient<>));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

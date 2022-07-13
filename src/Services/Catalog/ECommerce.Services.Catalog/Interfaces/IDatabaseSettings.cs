@@ -1,6 +1,6 @@
-﻿namespace ECommerce.Services.Catalog.Settings;
+﻿namespace ECommerce.Services.Catalog.Interfaces;
 
-internal interface IDatabaseSettings
+public interface IDatabaseSettings
 {
     public string CourseCollectionName { get; set; }
 
