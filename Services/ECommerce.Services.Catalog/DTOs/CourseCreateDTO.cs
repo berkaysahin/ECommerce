@@ -1,4 +1,4 @@
-﻿namespace Course.Services.Catalog.DTOs;
+﻿namespace ECommerce.Services.Catalog.DTOs;
 
 internal class CourseCreateDTO
 {

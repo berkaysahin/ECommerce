@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Course.Shared.DTOs
+namespace ECommerce.Shared.DTOs
 {
     public class Response<T>
     {

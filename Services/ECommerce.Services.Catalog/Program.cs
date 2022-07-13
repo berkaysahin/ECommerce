@@ -1,6 +1,6 @@
-﻿using Course.Services.Catalog.Interfaces;
-using Course.Services.Catalog.Services;
-using Course.Services.Catalog.Settings;
+﻿using ECommerce.Services.Catalog.Interfaces;
+using ECommerce.Services.Catalog.Services;
+using ECommerce.Services.Catalog.Settings;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);

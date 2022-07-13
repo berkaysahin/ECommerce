@@ -1,4 +1,4 @@
-﻿namespace Course.Shared.DTOs
+﻿namespace ECommerce.Shared.DTOs
 {
     public class NoContent
     {

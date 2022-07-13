@@ -1,4 +1,4 @@
-﻿namespace Course.Services.Catalog.Settings;
+﻿namespace ECommerce.Services.Catalog.Settings;
 
 internal interface IDatabaseSettings
 {

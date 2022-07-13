@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using Course.Services.Catalog.DTOs;
-using Course.Services.Catalog.Interfaces;
-using Course.Services.Catalog.Models;
-using Course.Services.Catalog.Settings;
-using Course.Shared.DTOs;
+using ECommerce.Services.Catalog.DTOs;
+using ECommerce.Services.Catalog.Interfaces;
+using ECommerce.Services.Catalog.Models;
+using ECommerce.Services.Catalog.Settings;
+using ECommerce.Shared.DTOs;
 using MongoDB.Driver;
 
-namespace Course.Services.Catalog.Services;
+namespace ECommerce.Services.Catalog.Services;
 
 internal class CategoryService : ICategoryService
 {

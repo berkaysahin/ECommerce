@@ -1,8 +1,8 @@
-﻿using Course.Services.Catalog.DTOs;
-using Course.Services.Catalog.Models;
-using Course.Shared.DTOs;
+﻿using ECommerce.Services.Catalog.DTOs;
+using ECommerce.Services.Catalog.Models;
+using ECommerce.Shared.DTOs;
 
-namespace Course.Services.Catalog.Interfaces;
+namespace ECommerce.Services.Catalog.Interfaces;
 
 internal interface ICategoryService
 {

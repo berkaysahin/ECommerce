@@ -1,4 +1,4 @@
-﻿namespace Course.Services.Catalog.Settings;
+﻿namespace ECommerce.Services.Catalog.Settings;
 
 public class DatabaseSettings : IDatabaseSettings
 {
