@@ -19,7 +19,6 @@ var mapper = config.CreateMapper();
 
 builder.Services.AddSingleton(mapper);
 
-
 builder.Services.AddControllers();
 
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
