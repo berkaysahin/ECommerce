@@ -2,9 +2,7 @@
 using ECommerce.Services.Catalog.DTOs;
 using ECommerce.Services.Catalog.Interfaces;
 using ECommerce.Services.Catalog.Models;
-using ECommerce.Services.Catalog.Settings;
 using ECommerce.Shared.DTOs;
-using MongoDB.Driver;
 
 namespace ECommerce.Services.Catalog.Services;
 
@@ -28,19 +26,22 @@ public class CategoryService : ICategoryService
         return Response<List<CategoryDTO>>.Success(data, 200);
     }
 
-    public async Task<Response<CategoryDTO>> CreateAsync(Category category)
-    {
-        await _mongoDb.InsertOneAsync(category);
-        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
-    }
-
     public async Task<Response<CategoryDTO>> GetByIdAsync(string id)
     {
-        var category = (await _mongoDb.FindAsync(category => category.Id == id)).FirstOrDefault();
+        var category = await _mongoDb.FindByIdAsync(category => category.Id == id);
 
         if (category is null)
             return Response<CategoryDTO>.Fail("Category not found", 404);
 
+        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
+    }
+
+    public async Task<Response<CategoryDTO>> CreateAsync(Category category)
+    {
+        if (category is null)
+            return Response<CategoryDTO>.Fail("Category can not null", 400);
+
+        await _mongoDb.InsertOneAsync(category);
         return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
     }
 }
