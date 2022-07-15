@@ -29,6 +29,7 @@ builder.Services.AddSingleton<IDatabaseSettings>(sp =>
 });
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 builder.Services.AddScoped(typeof(IMongoDbClient<>), typeof(MongoDbClient<>));
 
