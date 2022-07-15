@@ -37,4 +37,14 @@ public class MongoDbClient<T> : IMongoDbClient<T> where T : class
     {
         await _collection.InsertOneAsync(model);
     }
+
+    public async Task<T> FindOneAndReplace(Expression<Func<T, bool>> expression, T model)
+    {
+        return await _collection.FindOneAndReplaceAsync(expression, model);
+    }
+    
+    public async Task<DeleteResult> DeleteOneAsync(Expression<Func<T, bool>> expression)
+    {
+        return await _collection.DeleteOneAsync(expression);
+    }
 }
