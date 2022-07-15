@@ -4,7 +4,7 @@ using ECommerce.Shared.DTOs;
 
 namespace ECommerce.Services.Catalog.Interfaces;
 
-internal interface ICategoryService
+public interface ICategoryService
 {
     Task<Response<List<CategoryDTO>>> GetAllAsync();
 
