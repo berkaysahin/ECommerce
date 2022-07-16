@@ -16,6 +16,7 @@ public class CategoryController : CustomBaseController
         _categoryService = categoryService;
     }
 
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var categories = await _categoryService.GetAllAsync();
@@ -29,6 +30,7 @@ public class CategoryController : CustomBaseController
         return CreateActionResultInstance(category);
     }
 
+    [HttpPost]
     public async Task<IActionResult> Create(CategoryDTO categoryDto)
     {
         var response = await _categoryService.CreateAsync(categoryDto);
