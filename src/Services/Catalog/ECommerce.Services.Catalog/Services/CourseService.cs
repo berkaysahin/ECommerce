@@ -30,11 +30,11 @@ public class CourseService : ICourseService
     {
         var courses = await _mongoDb.FindAsync(course => true);
 
-        if (!courses.Any())
+        if (courses is null || !courses.Any())
             courses = new List<Course>();
         
         foreach (var course in courses)
-            course.Category = _mapper.Map<Category>(await _categoryService.GetByIdAsync(course.CategoryId));
+            course.Category = _mapper.Map<Category>((await _categoryService.GetByIdAsync(course.CategoryId)).Data);
 
         var data = _mapper.Map<List<CourseDTO>>(courses);
         return Response<List<CourseDTO>>.Success(data, 200);
@@ -47,7 +47,7 @@ public class CourseService : ICourseService
         if (course is null)
             return Response<CourseDTO>.Fail("Course not found", 404);
 
-        course.Category = _mapper.Map<Category>(await _categoryService.GetByIdAsync(course.CategoryId));
+        course.Category = _mapper.Map<Category>((await _categoryService.GetByIdAsync(course.CategoryId)).Data);
         
         return Response<CourseDTO>.Success(_mapper.Map<CourseDTO>(course), 200);
     }
@@ -56,11 +56,11 @@ public class CourseService : ICourseService
     {
         var courses = await _mongoDb.FindAsync(item => item.UserId == userId);
 
-        if (!courses.Any())
+        if (courses is null || !courses.Any())
             courses = new List<Course>();
         
         foreach (var course in courses)
-            course.Category = _mapper.Map<Category>(await _categoryService.GetByIdAsync(course.CategoryId));
+            course.Category = _mapper.Map<Category>((await _categoryService.GetByIdAsync(course.CategoryId)).Data);
 
         var data = _mapper.Map<List<CourseDTO>>(courses);
         return Response<List<CourseDTO>>.Success(data, 200);
@@ -95,8 +95,8 @@ public class CourseService : ICourseService
     public async Task<Response<NoContent>> DeleteAsync(string id)
     {
         var result = await _mongoDb.DeleteOneAsync(item => item.Id == id);
-
-        if (result is { DeletedCount: > 0 })
+        
+        if (result > 0)
             return Response<NoContent>.Success(204);
 
         return Response<NoContent>.Fail("Course not found", 404);
