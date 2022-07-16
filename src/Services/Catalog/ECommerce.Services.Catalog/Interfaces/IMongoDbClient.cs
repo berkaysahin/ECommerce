@@ -10,5 +10,5 @@ public interface IMongoDbClient<T> where T : class
     Task<T> FindByIdAsync(Expression<Func<T, bool>> expression);
     Task InsertOneAsync(T model);
     Task<T> FindOneAndReplace(Expression<Func<T, bool>> expression, T model);
-    Task<DeleteResult> DeleteOneAsync(Expression<Func<T, bool>> expression);
+    Task<long> DeleteOneAsync(Expression<Func<T, bool>> expression);
 }
