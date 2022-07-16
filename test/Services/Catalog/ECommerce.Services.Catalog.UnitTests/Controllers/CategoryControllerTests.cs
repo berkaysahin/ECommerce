@@ -92,7 +92,7 @@ public class CategoryControllerTests
         var categoryResult = (ObjectResult)(await _sut.GetById(category.Id));
 
         // Assert
-        Assert.That(((Response<CategoryDTO>)(categoryResult.Value)).StatusCode, Is.EqualTo(404));
+        Assert.That(categoryResult.StatusCode, Is.EqualTo(404));
     }
 
     #endregion
