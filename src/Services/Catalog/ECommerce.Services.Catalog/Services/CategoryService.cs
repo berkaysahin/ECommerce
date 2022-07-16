@@ -44,6 +44,6 @@ public class CategoryService : ICategoryService
         var category = _mapper.Map<Category>(categoryDto);
         await _mongoDb.InsertOneAsync(category);
         
-        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(categoryDto), 200);
+        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
     }
 }
