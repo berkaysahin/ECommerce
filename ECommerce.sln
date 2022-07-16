@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Shared", "src\Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.Services.Catalog", "src\Services\Catalog\ECommerce.Services.Catalog\ECommerce.Services.Catalog.csproj", "{B892F358-236F-4BBD-BC38-B300EF333560}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{AC0E02B7-97B2-457F-94B7-B0156DE8EB67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.IdentityServer", "src\IdentityServer\ECommerce.IdentityServer\ECommerce.IdentityServer.csproj", "{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +50,10 @@ Global
 		{B892F358-236F-4BBD-BC38-B300EF333560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B892F358-236F-4BBD-BC38-B300EF333560}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B892F358-236F-4BBD-BC38-B300EF333560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,5 +70,7 @@ Global
 		{F2A1DAF9-A240-4849-8622-D5E889A8F651} = {A2BA871B-A1AA-47AB-92C6-BC6A7670F7D9}
 		{6A739B50-7C91-4FA8-AB25-65F6ED502499} = {187C69DD-A051-4C02-AE98-CBEA3D204427}
 		{B892F358-236F-4BBD-BC38-B300EF333560} = {382189E2-8837-4C89-9F7E-3F0EE82B89AE}
+		{AC0E02B7-97B2-457F-94B7-B0156DE8EB67} = {6CB19BFD-CD05-42EE-B9A6-7CAD4BCF2946}
+		{829F63C3-6B21-42B6-BE8D-D1CF95E2FABE} = {AC0E02B7-97B2-457F-94B7-B0156DE8EB67}
 	EndGlobalSection
 EndGlobal
