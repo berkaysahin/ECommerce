@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
+using ECommerce.Services.Catalog.DTOs;
 using ECommerce.Services.Catalog.Interfaces;
 using ECommerce.Services.Catalog.Mapping;
 using ECommerce.Services.Catalog.Models;
@@ -98,7 +99,7 @@ public class CategoryServiceTests
     public async Task CreateAsync_ShouldReturnCategory_WhenCategoryCreated()
     {
         // Arrange
-        Category category = new Category()
+        CategoryDTO category = new CategoryDTO()
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Lorem"
@@ -125,7 +126,7 @@ public class CategoryServiceTests
             .Returns(Task.FromResult(typeof(void)));
 
         // Act
-        var categoryResult = await _sut.CreateAsync(null as Category);
+        var categoryResult = await _sut.CreateAsync(null as CategoryDTO);
 
         // Assert
         Assert.Null(categoryResult.Data);

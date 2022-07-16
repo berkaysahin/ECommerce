@@ -36,12 +36,14 @@ public class CategoryService : ICategoryService
         return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
     }
 
-    public async Task<Response<CategoryDTO>> CreateAsync(Category category)
+    public async Task<Response<CategoryDTO>> CreateAsync(CategoryDTO categoryDto)
     {
-        if (category is null)
+        if (categoryDto is null)
             return Response<CategoryDTO>.Fail("Category can not null", 400);
 
+        var category = _mapper.Map<Category>(categoryDto);
         await _mongoDb.InsertOneAsync(category);
-        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(category), 200);
+        
+        return Response<CategoryDTO>.Success(_mapper.Map<CategoryDTO>(categoryDto), 200);
     }
 }
