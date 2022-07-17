@@ -5,10 +5,13 @@ using ECommerce.IdentityServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ECommerce.Shared.DTOs;
+using IdentityServer4;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.IdentityServer.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(IdentityServerConstants.LocalApi.PolicyName)]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : ControllerBase
     {
