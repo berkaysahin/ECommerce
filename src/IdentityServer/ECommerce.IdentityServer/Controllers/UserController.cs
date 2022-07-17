@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using ECommerce.Shared.DTOs;
 using IdentityServer4;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace ECommerce.IdentityServer.Controllers
 {
@@ -38,6 +39,28 @@ namespace ECommerce.IdentityServer.Controllers
                 return BadRequest(Response<Shared.DTOs.NoContent>.Fail(result.Errors.Select(item => item.Description).ToList(), 400));
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUser()
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(item => item.Type == JwtRegisteredClaimNames.Sub);
+
+            if (userIdClaim is null)
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(userIdClaim.Value);
+
+            if (user is null)
+                return BadRequest();
+
+            return Ok(new
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                City = user.City
+            });
         }
     }
 }
