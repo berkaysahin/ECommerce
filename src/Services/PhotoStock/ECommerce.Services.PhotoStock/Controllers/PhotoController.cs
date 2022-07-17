@@ -26,4 +26,16 @@ public class PhotoController : CustomBaseController
 
         return CreateActionResultInstance(Response<PhotoDTO>.Success(photoDto, 200));
     }
+
+    public IActionResult PhotoDelete(string photoUrl)
+    {
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photo", photoUrl);
+
+        if (!System.IO.File.Exists(path))
+            return CreateActionResultInstance(Response<NoContent>.Fail("Photo not found", 404));
+            
+        System.IO.File.Delete(path);
+
+        return CreateActionResultInstance(Response<NoContent>.Success(204));
+    }
 }
