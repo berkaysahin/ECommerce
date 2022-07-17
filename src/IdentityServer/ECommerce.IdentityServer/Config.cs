@@ -56,6 +56,7 @@ namespace ECommerce.IdentityServer
                 {
                     ClientName = "ASP.Net Core MVC",
                     ClientId = "WebMvcClientForUser",
+                    AllowOfflineAccess = true,
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
                     AllowedScopes =
