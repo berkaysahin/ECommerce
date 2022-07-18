@@ -15,12 +15,12 @@ public class PhotoController : CustomBaseController
         if (photo is null || photo.Length < 1)
             return CreateActionResultInstance(Response<PhotoDTO>.Fail("Photo is empty", 400));
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photo", photo.FileName);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", photo.FileName);
 
         using var stream = new FileStream(path, FileMode.Create);
         await photo.CopyToAsync(stream, cancellationToken);
 
-        var returnPath = $"photo/{photo.FileName}";
+        var returnPath = $"photos/{photo.FileName}";
 
         PhotoDTO photoDto = new() { Url = returnPath };
 
@@ -29,7 +29,7 @@ public class PhotoController : CustomBaseController
 
     public IActionResult PhotoDelete(string photoUrl)
     {
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photo", photoUrl);
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", photoUrl);
 
         if (!System.IO.File.Exists(path))
             return CreateActionResultInstance(Response<NoContent>.Fail("Photo not found", 404));
