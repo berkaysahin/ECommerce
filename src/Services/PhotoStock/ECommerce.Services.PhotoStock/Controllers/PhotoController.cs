@@ -14,8 +14,13 @@ public class PhotoController : CustomBaseController
     {
         if (photo is null || photo.Length < 1)
             return CreateActionResultInstance(Response<PhotoDTO>.Fail("Photo is empty", 400));
+        
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos");
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", photo.FileName);
+        if (!System.IO.Directory.Exists(path))
+            System.IO.Directory.CreateDirectory(path);
+        
+        path = Path.Combine(path, photo.FileName);
 
         using var stream = new FileStream(path, FileMode.Create);
         await photo.CopyToAsync(stream, cancellationToken);
