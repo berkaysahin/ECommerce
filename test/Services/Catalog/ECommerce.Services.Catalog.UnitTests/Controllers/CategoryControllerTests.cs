@@ -14,8 +14,10 @@ namespace ECommerce.Services.Catalog.UnitTests.Controllers;
 
 public class CategoryControllerTests
 {
-    private readonly CategoryController _sut;
+    private CategoryController _sut;
     private readonly Mock<IMongoDbClient<Category>> _mongoDbClientMock = new Mock<IMongoDbClient<Category>>();
+    private ICategoryService _categoryService;
+    private readonly IMapper _mapper;
 
     public CategoryControllerTests()
     {
@@ -24,10 +26,9 @@ public class CategoryControllerTests
             mc.AddProfile(new MappingProfile());
         });
 
-        IMapper mapper = mappingConfig.CreateMapper();
-
-        ICategoryService categoryService = new CategoryService(mapper, _mongoDbClientMock.Object);
-        _sut = new CategoryController(categoryService);
+        _mapper = mappingConfig.CreateMapper();
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
     }
     
     [Test]
@@ -43,6 +44,9 @@ public class CategoryControllerTests
         _mongoDbClientMock
             .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Category, bool>>>()))
             .ReturnsAsync(new List<Category>() { category });
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
+        _sut = new CategoryController(_categoryService);
 
         // Act
         var categoryResult = (ObjectResult)(await _sut.GetAll());
@@ -66,6 +70,9 @@ public class CategoryControllerTests
         _mongoDbClientMock
             .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
             .ReturnsAsync(category);
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
+        _sut = new CategoryController(_categoryService);
 
         // Act
         var categoryResult = (ObjectResult)(await _sut.GetById(category.Id));
@@ -87,6 +94,9 @@ public class CategoryControllerTests
         _mongoDbClientMock
             .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
             .ReturnsAsync(null as Category);
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
+        _sut = new CategoryController(_categoryService);
 
         // Act
         var categoryResult = (ObjectResult)(await _sut.GetById(category.Id));
@@ -112,6 +122,9 @@ public class CategoryControllerTests
         _mongoDbClientMock
             .Setup(f => f.InsertOneAsync(It.IsAny<Category>()))
             .Returns(Task.FromResult(typeof(void)));
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
+        _sut = new CategoryController(_categoryService);
 
         // Act
         var categoryResult = (ObjectResult)(await _sut.Create(category));
@@ -128,6 +141,9 @@ public class CategoryControllerTests
         _mongoDbClientMock
             .Setup(f => f.InsertOneAsync(It.IsAny<Category>()))
             .Returns(Task.FromResult(typeof(void)));
+        
+        _categoryService = new CategoryService(_mapper, _mongoDbClientMock.Object);
+        _sut = new CategoryController(_categoryService);
 
         // Act
         var categoryResult = (ObjectResult)(await _sut.Create(null as CategoryDTO));
