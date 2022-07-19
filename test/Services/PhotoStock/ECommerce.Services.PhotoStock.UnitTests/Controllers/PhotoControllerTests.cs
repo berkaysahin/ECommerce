@@ -17,7 +17,7 @@ public class PhotoControllerTests
     
     #region PhotoSave
 
-    [Test]
+    [Test, Order(1)]
     public async Task PhotoSave_ShouldReturnFilePath_WhenFileCreated()
     {
         // Arrange
@@ -43,7 +43,7 @@ public class PhotoControllerTests
         Assert.NotNull(((Response<PhotoDTO>)result.Value).Data.Url);
     }
 
-    [Test]
+    [Test, Order(2)]
     public async Task PhotoSave_ShouldReturnFail_WhenFileNotCreated()
     {
         // Arrange
@@ -60,7 +60,7 @@ public class PhotoControllerTests
 
     #region PhotoDelete
 
-    [Test]
+    [Test, Order(3)]
     public void PhotoDelete_ShouldReturnIsSuccessfulTrue_WhenPhotoDeleted()
     {
         // Arrange
@@ -73,7 +73,7 @@ public class PhotoControllerTests
         Assert.True(((Response<NoContent>)(result.Value)).IsSuccessful);
     }
 
-    [Test]
+    [Test, Order(4)]
     public void PhotoDelete_ShouldReturnIsSuccessFalse_WhenPhotoNotDeleted()
     {
         // Arrange
