@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.Authority = builder.Configuration["IdentityServerURL"];
-    options.Audience = "photo_stock_catalog";
+    options.Audience = "resource_photo_stock";
     options.RequireHttpsMetadata = false;
 });
 
