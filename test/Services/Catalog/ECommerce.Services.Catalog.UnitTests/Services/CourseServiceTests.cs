@@ -136,11 +136,9 @@ public class CourseServiceTests
     public async Task GetByIdAsync_ShouldReturnIsSuccessfulFalse_WhenCourseDoesntExist()
     {
         // Arrange
-        Category category = new Category()
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = "is simply dummy"
-        };
+        _courseMongoDbClientMock
+            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Course, bool>>>()))
+            .ReturnsAsync(null as Course);
         
         _categoryMongoDbClientMock
             .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
