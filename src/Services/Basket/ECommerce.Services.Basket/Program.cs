@@ -1,5 +1,7 @@
 using ECommerce.Services.Basket.Services;
 using ECommerce.Services.Basket.Settings;
+using ECommerce.Shared.Interfaces;
+using ECommerce.Shared.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,9 @@ builder.Services.AddSingleton<RedisService>(sp =>
     
     return redis;
 });
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
