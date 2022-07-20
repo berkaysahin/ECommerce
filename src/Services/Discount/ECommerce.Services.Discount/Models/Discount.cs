@@ -1,6 +1,5 @@
 namespace ECommerce.Services.Discount.Models;
 
-[Dapper.Contrib.Extensions.Table("discount")]
 public class Discount
 {
     public int Id { get; set; }
