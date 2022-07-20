@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using ECommerce.Services.Discount.Data;
 using ECommerce.Services.Discount.Interfaces;
 using ECommerce.Services.Discount.Repositories;
+using ECommerce.Services.Discount.Services;
 using ECommerce.Shared.Interfaces;
 using ECommerce.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
@@ -33,7 +35,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connStr);
 });
 
-builder.Services.AddSingleton<IDiscountRepository, DiscountRepository>();
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 builder.Services.AddControllers(options =>
 {
