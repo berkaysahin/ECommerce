@@ -1,4 +1,3 @@
-using System.Linq;
 using ECommerce.Shared.Interfaces;
 using Microsoft.AspNetCore.Http;
 

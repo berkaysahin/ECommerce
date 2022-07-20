@@ -42,7 +42,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = "79351164-be60-49c0-a83b-99a4aff14f53"
         };
 
@@ -113,7 +113,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = category.Id
         };
 
@@ -175,7 +175,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = userId,
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = category.Id
         };
 
@@ -279,7 +279,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
 
@@ -325,7 +325,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
         
@@ -352,7 +352,7 @@ public class CourseServiceTests
             Price = 0,
             UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
             Picture = "null",
-            CreatedTime = DateTime.Now,
+            CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
         

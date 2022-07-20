@@ -72,7 +72,7 @@ public class CourseService : ICourseService
             return Response<CourseDTO>.Fail("Course can not null", 404);
             
         var newCourse = _mapper.Map<Course>(courseCreateDto);
-        newCourse.CreatedTime = DateTime.Now;
+        newCourse.CreatedTime = DateTime.UtcNow;
         
         await _mongoDb.InsertOneAsync(newCourse);
         
