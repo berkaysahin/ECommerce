@@ -2,6 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using ECommerce.Services.Discount.Data;
 using ECommerce.Services.Discount.Interfaces;
 using ECommerce.Services.Discount.Repositories;
+using ECommerce.Shared.Interfaces;
+using ECommerce.Shared.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -10,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISharedIdentityService, SharedIdentityService>();
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
