@@ -1,9 +1,11 @@
-﻿using System.Linq.Expressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using ECommerce.Services.Catalog.Interfaces;
 using MongoDB.Driver;
 
 namespace ECommerce.Services.Catalog.Storage;
 
+[ExcludeFromCodeCoverage]
 public class MongoDbClient<T> : IMongoDbClient<T> where T : class
 {
     private IMongoDatabase _database;
