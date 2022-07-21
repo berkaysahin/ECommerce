@@ -1,9 +1,7 @@
 using System.Linq.Expressions;
-using AutoMapper;
 using ECommerce.Services.Catalog.Controllers;
 using ECommerce.Services.Catalog.DTOs;
 using ECommerce.Services.Catalog.Interfaces;
-using ECommerce.Services.Catalog.Mapping;
 using ECommerce.Services.Catalog.Models;
 using ECommerce.Services.Catalog.Services;
 using ECommerce.Shared.DTOs;
@@ -15,22 +13,11 @@ namespace ECommerce.Services.Catalog.UnitTests.Controllers;
 public class CourseControllerTests
 {
     private CourseController _sut;
-    private readonly Mock<IMongoDbClient<Course>> _courseMongoDbClientMock = new Mock<IMongoDbClient<Course>>();
-    private readonly Mock<IMongoDbClient<Category>> _categoryMongoDbClientMock = new Mock<IMongoDbClient<Category>>();
-    private readonly IMapper _mapper;
-    private ICourseService _courseService;
+    private readonly Mock<ICourseService> _courseService = new Mock<ICourseService>();
     
     public CourseControllerTests()
     {
-        var mappingConfig = new MapperConfiguration(mc =>
-        {
-            mc.AddProfile(new MappingProfile());
-        });
-
-        _mapper = mappingConfig.CreateMapper();
-
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _sut = new CourseController(_courseService.Object);
     }
     
     #region GetAll
@@ -39,25 +26,22 @@ public class CourseControllerTests
     public async Task GetAll_ShouldReturnCourses_WhenCoursesExist()
     {
         // Arrange
-        Course course = new Course
+        CourseDTO course = new CourseDTO
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
             CreatedTime = DateTime.UtcNow,
-            CategoryId = "79351164-be60-49c0-a83b-99a4aff14f53"
+            CategoryId = Guid.NewGuid().ToString()
         };
 
-        _courseMongoDbClientMock
-            .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(new List<Course>() { course });
+        _courseService
+            .Setup(f => f.GetAllAsync())
+            .ReturnsAsync(Response<List<CourseDTO>>.Success(new List<CourseDTO>() { course }, 200));
         
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
         // Act
         var courseResult = (ObjectResult)(await _sut.GetAll());
 
@@ -69,34 +53,9 @@ public class CourseControllerTests
     public async Task GetAll_ShouldReturnCourseCountZero_WhenCourseDoesntExist()
     {
         // Arrange
-        _courseMongoDbClientMock
-            .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(new List<Course>());
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
-        // Act
-        var courseResult = (ObjectResult)(await _sut.GetAll());
-
-        // Assert
-        Assert.Zero(((Response<List<CourseDTO>>)(courseResult.Value)).Data.Count);
-    }
-    
-    [Test]
-    public async Task GetAll_ShouldReturnCategoryCountZero_WhenCategoryAndCourseAreNull()
-    {
-        // Arrange
-        _courseMongoDbClientMock
-            .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(null as List<Course>);
-        
-        _categoryMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
-            .ReturnsAsync(null as Category);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _courseService
+            .Setup(f => f.GetAllAsync())
+            .ReturnsAsync(Response<List<CourseDTO>>.Success(new List<CourseDTO>(), 200));
 
         // Act
         var courseResult = (ObjectResult)(await _sut.GetAll());
@@ -119,29 +78,22 @@ public class CourseControllerTests
             Name = "is simply dummy"
         };
         
-        Course course = new Course
+        CourseDTO course = new CourseDTO
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
             CreatedTime = DateTime.UtcNow,
             CategoryId = category.Id
         };
 
-        _courseMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(course);
-
-        _categoryMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
-            .ReturnsAsync(category);
+        _courseService
+            .Setup(f => f.GetByIdAsync(course.Id))
+            .ReturnsAsync(Response<CourseDTO>.Success(course, 200));
         
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
         // Act
         var courseResult = (ObjectResult)(await _sut.GetById(course.Id));
 
@@ -153,19 +105,13 @@ public class CourseControllerTests
     public async Task GetById_ShouldReturnIsSuccessfulFalse_WhenCourseDoesntExist()
     {
         // Arrange
-        _courseMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(null as Course);
+        string userId = Guid.NewGuid().ToString();
         
-        _categoryMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
-            .ReturnsAsync(null as Category);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
+        _courseService
+            .Setup(f => f.GetByIdAsync(userId))
+            .ReturnsAsync(Response<CourseDTO>.Fail("Course not found", 404));
         // Act
-        var courseResult = (ObjectResult)(await _sut.GetById(Guid.NewGuid().ToString()));
+        var courseResult = (ObjectResult)(await _sut.GetById(userId));
 
         // Assert
         Assert.False(((Response<CourseDTO>)(courseResult.Value)).IsSuccessful);
@@ -187,7 +133,7 @@ public class CourseControllerTests
             Name = "is simply dummy"
         };
         
-        Course course = new Course
+        CourseDTO course = new CourseDTO
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Lorem",
@@ -199,16 +145,9 @@ public class CourseControllerTests
             CategoryId = category.Id
         };
 
-        _courseMongoDbClientMock
-            .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(new List<Course>() { course });
-
-        _categoryMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
-            .ReturnsAsync(category);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _courseService
+            .Setup(f => f.GetAllByUserIdAsync(course.UserId))
+            .ReturnsAsync(Response<List<CourseDTO>>.Success(new List<CourseDTO>() { course }, 200));
 
         // Act
         var courseResult = (ObjectResult)(await _sut.GetAllByUserId(userId));
@@ -221,25 +160,14 @@ public class CourseControllerTests
     public async Task GetAllByUserId_ShouldReturnCourseCountZero_WhenUserDontHaveCourse()
     {
         // Arrange
-        Category category = new Category()
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = "is simply dummy"
-        };
+        string userId = Guid.NewGuid().ToString();
         
-        _courseMongoDbClientMock
-            .Setup(f => f.FindAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(null as List<Course>);
+        _courseService
+            .Setup(f => f.GetAllByUserIdAsync(userId))
+            .ReturnsAsync(Response<List<CourseDTO>>.Success(new List<CourseDTO>(), 200));
         
-        _categoryMongoDbClientMock
-            .Setup(f => f.FindByIdAsync(It.IsAny<Expression<Func<Category, bool>>>()))
-            .ReturnsAsync(null as Category);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
         // Act
-        var courseResult = (ObjectResult)(await _sut.GetAllByUserId(Guid.NewGuid().ToString()));
+        var courseResult = (ObjectResult)(await _sut.GetAllByUserId(userId));
 
         // Assert
         Assert.Zero(((Response<List<CourseDTO>>)(courseResult.Value)).Data.Count);
@@ -258,17 +186,24 @@ public class CourseControllerTests
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
             CategoryId = Guid.NewGuid().ToString(),
         };
-
-        _courseMongoDbClientMock
-            .Setup(f => f.InsertOneAsync(It.IsAny<Course>()))
-            .Returns(Task.FromResult(typeof(void)));
         
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        CourseDTO returnCourse = new CourseDTO
+        {
+            Name = "Lorem",
+            Description = "ipsum",
+            Price = 0,
+            UserId = course.UserId,
+            Picture = "null",
+            CategoryId = course.CategoryId,
+        };
+
+        _courseService
+            .Setup(f => f.CreateAsync(course))
+            .ReturnsAsync(Response<CourseDTO>.Success(returnCourse, 200));
 
         // Act
         var courseResult = (ObjectResult)(await _sut.Create(course));
@@ -281,13 +216,10 @@ public class CourseControllerTests
     public async Task Create_ShouldReturnIsSuccessfulFalse_WhenCourseNotCreated()
     {
         // Arrange
-        _courseMongoDbClientMock
-            .Setup(f => f.InsertOneAsync(It.IsAny<Course>()))
-            .Returns(Task.FromResult(typeof(void)));
+        _courseService
+            .Setup(f => f.CreateAsync(null as CourseCreateDTO))
+            .ReturnsAsync(Response<CourseDTO>.Fail("Course can not null", 404));
         
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
         // Act
         var courseResult = (ObjectResult)(await _sut.Create(null as CourseCreateDTO));
 
@@ -303,27 +235,23 @@ public class CourseControllerTests
     public async Task Update_ShouldReturnIsSuccessTrue_WhenCourseUpdated()
     {
         // Arrange
-        Course course = new Course
+        CourseUpdateDTO course = new CourseUpdateDTO
         {
             Id = Guid.NewGuid().ToString(),
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
-            CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
 
-        _courseMongoDbClientMock
-            .Setup(f => f.FindOneAndReplace(It.IsAny<Expression<Func<Course, bool>>>(), It.IsAny<Course>()))
-            .ReturnsAsync(course);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _courseService
+            .Setup(f => f.UpdateAsync(course))
+            .ReturnsAsync(Response<NoContent>.Success(204));
 
         // Act
-        var courseResult = (ObjectResult)(await _sut.Update(_mapper.Map<CourseUpdateDTO>(course)));
+        var courseResult = (ObjectResult)(await _sut.Update(course));
 
         // Assert
         Assert.True(((Response<NoContent>)(courseResult.Value)).IsSuccessful);
@@ -333,12 +261,9 @@ public class CourseControllerTests
     public async Task Update_ShouldReturnIsSuccessfulFalse_WhenCourseNotUpdated()
     {
         // Arrange
-        _courseMongoDbClientMock
-            .Setup(f => f.FindOneAndReplace(It.IsAny<Expression<Func<Course, bool>>>(), It.IsAny<Course>()))
-            .ReturnsAsync(null as Course);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _courseService
+            .Setup(f => f.UpdateAsync(null as CourseUpdateDTO))
+            .ReturnsAsync(Response<NoContent>.Fail("Course not found", 404));
 
         // Act
         var courseResult = (ObjectResult)(await _sut.Update(null as CourseUpdateDTO));
@@ -361,19 +286,16 @@ public class CourseControllerTests
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
             CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
         
-        _courseMongoDbClientMock
-            .Setup(f => f.DeleteOneAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(1);
+        _courseService
+            .Setup(f => f.DeleteAsync(course.Id))
+            .ReturnsAsync(Response<NoContent>.Success(204));
         
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
-
         // Act
         var courseResult = (ObjectResult)(await _sut.Delete(course.Id));
 
@@ -391,18 +313,15 @@ public class CourseControllerTests
             Name = "Lorem",
             Description = "ipsum",
             Price = 0,
-            UserId = "9d85174d-e6bf-4b51-888a-ae569b978080",
+            UserId = Guid.NewGuid().ToString(),
             Picture = "null",
             CreatedTime = DateTime.UtcNow,
             CategoryId = Guid.NewGuid().ToString()
         };
         
-        _courseMongoDbClientMock
-            .Setup(f => f.DeleteOneAsync(It.IsAny<Expression<Func<Course, bool>>>()))
-            .ReturnsAsync(0);
-        
-        _courseService = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
-        _sut = new CourseController(_courseService);
+        _courseService
+            .Setup(f => f.DeleteAsync(course.Id))
+            .ReturnsAsync(Response<NoContent>.Fail("Course not found", 404));
 
         // Act
         var courseResult = (ObjectResult)(await _sut.Delete(course.Id));

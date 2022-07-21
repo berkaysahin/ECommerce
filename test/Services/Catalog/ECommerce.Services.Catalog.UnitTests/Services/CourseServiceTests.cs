@@ -314,7 +314,7 @@ public class CourseServiceTests
     #region DeleteAsync
 
     [Test]
-    public async Task DeleteAsync_ShouldReturnIsSuccessfulTrue_WhenCourseUpdated()
+    public async Task DeleteAsync_ShouldReturnIsSuccessfulTrue_WhenCourseDeleted()
     {
         // Arrange
         Course course = new Course
@@ -341,7 +341,7 @@ public class CourseServiceTests
     }
 
     [Test]
-    public async Task DeleteAsync_ShouldReturnIsSuccessFalse_WhenCourseNotUpdated()
+    public async Task DeleteAsync_ShouldReturnIsSuccessFalse_WhenCourseNotDeleted()
     {
         // Arrange
         Course course = new Course
