@@ -21,14 +21,14 @@ public class DiscountController : CustomBaseController
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var result = await _discountService.GetAll();
+        var result = await _discountService.GetAllAsync();
         return CreateActionResultInstance(result);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(int id)
     {
-        var result = await _discountService.GetById(id);
+        var result = await _discountService.GetByIdAsync(id);
         return CreateActionResultInstance(result);
     }
 
@@ -37,28 +37,28 @@ public class DiscountController : CustomBaseController
     public async Task<IActionResult> GetByCode(string code)
     {
         var userId = _identityService.GetUserId;
-        var result = await _discountService.GetByCodeAndUserId(code, userId);
+        var result = await _discountService.GetByCodeAndUserIdAsync(code, userId);
         return CreateActionResultInstance(result);
     }
 
     [HttpPost]
     public async Task<IActionResult> Save(Models.Discount discount)
     {
-        var result = await _discountService.Save(discount);
+        var result = await _discountService.SaveAsync(discount);
         return CreateActionResultInstance(result);
     }
     
     [HttpPut]
     public async Task<IActionResult> Update(Models.Discount discount)
     {
-        var result = await _discountService.Update(discount);
+        var result = await _discountService.UpdateAsync(discount);
         return CreateActionResultInstance(result);
     }
     
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var result = await _discountService.Delete(id);
+        var result = await _discountService.DeleteAsync(id);
         return CreateActionResultInstance(result);
     }
 }

@@ -12,13 +12,13 @@ public class DiscountService : IDiscountService
         _discountRepository = discountRepository;
     }
 
-    public async Task<Response<List<Models.Discount>>> GetAll()
+    public async Task<Response<List<Models.Discount>>> GetAllAsync()
     {
         var discounts = await _discountRepository.GetAll();
         return Response<List<Models.Discount>>.Success(discounts.ToList(), 200);
     }
 
-    public async Task<Response<Models.Discount>> GetById(int id)
+    public async Task<Response<Models.Discount>> GetByIdAsync(int id)
     {
         var discount = await _discountRepository.GetById(id);
 
@@ -28,7 +28,7 @@ public class DiscountService : IDiscountService
         return Response<Models.Discount>.Success(discount, 200);
     }
 
-    public async Task<Response<Models.Discount>> GetByCodeAndUserId(string code, string userId)
+    public async Task<Response<Models.Discount>> GetByCodeAndUserIdAsync(string code, string userId)
     {
         var discount = await _discountRepository.GetByCodeAndUserId(code, userId);
         
@@ -38,7 +38,7 @@ public class DiscountService : IDiscountService
         return Response<Models.Discount>.Success(discount, 200);
     }
     
-    public async Task<Response<NoContent>> Save(Models.Discount discount)
+    public async Task<Response<NoContent>> SaveAsync(Models.Discount discount)
     {
         var status = await _discountRepository.Save(discount); 
 
@@ -48,7 +48,7 @@ public class DiscountService : IDiscountService
         return Response<NoContent>.Fail("An error occurred while adding", 500);
     }
 
-    public async Task<Response<NoContent>> Update(Models.Discount discount)
+    public async Task<Response<NoContent>> UpdateAsync(Models.Discount discount)
     {
         var discountData = await _discountRepository.GetById(discount.Id);
         
@@ -63,7 +63,7 @@ public class DiscountService : IDiscountService
         return Response<NoContent>.Fail("An error occurred while updating", 500);
     }
 
-    public async Task<Response<NoContent>> Delete(int id)
+    public async Task<Response<NoContent>> DeleteAsync(int id)
     {
         var discountData = await _discountRepository.GetById(id);
         
