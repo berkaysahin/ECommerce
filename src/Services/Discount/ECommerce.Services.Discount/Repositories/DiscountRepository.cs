@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using ECommerce.Services.Discount.Data;
 using ECommerce.Services.Discount.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Services.Discount.Repositories;
 
+[ExcludeFromCodeCoverage]
 public class DiscountRepository : IDiscountRepository
 {
     private readonly ApplicationDbContext _dbContext;
