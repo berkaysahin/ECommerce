@@ -4,9 +4,9 @@ using MediatR;
 
 namespace ECommerce.Services.Order.Application.Commands;
 
-public abstract class CreateOrderCommand : IRequest<Response<CreatedOrderDTO>>
+public class CreateOrderCommand : IRequest<Response<CreatedOrderDTO>>
 {
     public string BuyerId { get; set; }
     public List<OrderItemDTO> OrderItems { get; set; }
-    public AddressDTO AddressDto { get; set; }
+    public AddressDTO Address { get; set; }
 }
