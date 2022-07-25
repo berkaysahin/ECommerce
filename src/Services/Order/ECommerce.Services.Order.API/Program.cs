@@ -1,5 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using ECommerce.Services.Order.Infrastructure;
+using ECommerce.Services.Order.Infrastructure.Interfaces;
+using ECommerce.Services.Order.Infrastructure.Repositories;
 using ECommerce.Shared.Interfaces;
 using ECommerce.Shared.Services;
 using MediatR;
@@ -41,6 +43,8 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
 });
+
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
