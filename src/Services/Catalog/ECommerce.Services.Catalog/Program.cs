@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ECommerce.Services.Catalog.DTOs;
 using ECommerce.Services.Catalog.Interfaces;
 using ECommerce.Services.Catalog.Mapping;
 using ECommerce.Services.Catalog.Services;
@@ -50,6 +51,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+
+    var categoryService = serviceProvider.GetRequiredService<ICategoryService>();
+
+    if (!categoryService.GetAllAsync().Result.Data.Any())
+    {
+        categoryService.CreateAsync(new CategoryDTO { Name = "ASP.NET Core API Course"}).Wait();
+        categoryService.CreateAsync(new CategoryDTO { Name = "ASP.NET Core MVC Course"}).Wait();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
