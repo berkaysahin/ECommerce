@@ -19,6 +19,7 @@ namespace ECommerce.IdentityServer
             new ApiResource("resource_discount"){ Scopes = {"discount_fullpermission"} },
             new ApiResource("resource_order"){ Scopes = {"order_fullpermission"} },
             new ApiResource("resource_payment"){ Scopes = {"payment_fullpermission"} },
+            new ApiResource("resource_gateway"){ Scopes = {"gateway_fullpermission"} },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -46,6 +47,7 @@ namespace ECommerce.IdentityServer
                 new ApiScope("discount_fullpermission", "full access for Discount API"),
                 new ApiScope("order_fullpermission", "full access for Order API"),
                 new ApiScope("payment_fullpermission", "full access for Payment API"),
+                new ApiScope("gateway_fullpermission", "full access for Gateway API"),
                 new ApiScope(IdentityServerConstants.LocalApi.ScopeName),
             };
 
@@ -58,7 +60,13 @@ namespace ECommerce.IdentityServer
                     ClientId = "WebMvcClient",
                     ClientSecrets = { new Secret("secret".Sha256()) },
                     AllowedGrantTypes = { GrantType.ClientCredentials },
-                    AllowedScopes = { "catalog_fullpermission", "photo_stock_fullpermission", IdentityServerConstants.LocalApi.ScopeName }
+                    AllowedScopes =
+                    {
+                        "catalog_fullpermission", 
+                        "photo_stock_fullpermission", 
+                        "gateway_fullpermission", 
+                        IdentityServerConstants.LocalApi.ScopeName 
+                    }
                 },
                 new Client
                 {
@@ -73,6 +81,7 @@ namespace ECommerce.IdentityServer
                         "discount_fullpermission",
                         "order_fullpermission",
                         "payment_fullpermission",
+                        "gateway_fullpermission",
                         IdentityServerConstants.StandardScopes.Email, 
                         IdentityServerConstants.StandardScopes.OpenId, 
                         IdentityServerConstants.StandardScopes.Profile,
