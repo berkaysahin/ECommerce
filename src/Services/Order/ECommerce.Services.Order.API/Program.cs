@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
+using ECommerce.Services.Order.Application.Consumers;
 using ECommerce.Services.Order.Infrastructure;
 using ECommerce.Services.Order.Infrastructure.Interfaces;
 using ECommerce.Services.Order.Infrastructure.Repositories;
 using ECommerce.Shared.Interfaces;
 using ECommerce.Shared.Services;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +15,28 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<CreateOrderMessageCommandConsumer>();
+    
+    // Default Port : 5672
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQUrl"], "/", host =>
+        {
+            host.Username("guest");
+            host.Password("guest");
+        });
+        
+        cfg.ReceiveEndpoint("create-order-service", e =>
+        {
+            e.ConfigureConsumer<CreateOrderMessageCommandConsumer>(context);
+        });
+    });
+});
+
+builder.Services.AddMassTransitHostedService();
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 
