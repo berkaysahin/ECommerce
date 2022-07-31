@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using ECommerce.Services.Order.Domain.OrderAggregate;
 using ECommerce.Services.Order.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,5 +24,23 @@ public class OrderRepository : IOrderRepository
     {
         await _context.Orders.AddAsync(order);
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<List<Domain.OrderAggregate.OrderItem>> GetOrderItemsByProductId(Expression<Func<Domain.OrderAggregate.OrderItem, bool>> expression)
+    {
+        return await _context.OrderItem
+            .Where(expression).ToListAsync();
+    }
+    
+    public async Task<int> UpdateOrderItems(List<OrderItem> orderItems)
+    {
+        _context.ChangeTracker.Clear();
+        
+        orderItems.ForEach(item =>
+        {
+            _context.Update(item);
+        });
+        
+        return await _context.SaveChangesAsync();
     }
 }
