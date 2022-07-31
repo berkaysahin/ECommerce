@@ -31,9 +31,16 @@ public class BasketController : CustomBaseController
     }
     
     [HttpPost]
-    public async Task<IActionResult> SaveOrUpdateBasket(BasketDTO basketDto)
+    public async Task<IActionResult> SaveBasket(BasketDTO basketDto)
     {
-        var response = await _basketService.SaveOrUpdate(basketDto);
+        var response = await _basketService.Save(basketDto);
+        return CreateActionResultInstance(response);
+    }
+    
+    [HttpPut]
+    public async Task<IActionResult> UpdateBasket(BasketDTO basketDto)
+    {
+        var response = await _basketService.Update(basketDto);
         return CreateActionResultInstance(response);
     }
     

@@ -2,6 +2,7 @@ using System.Text.Json;
 using ECommerce.Services.Basket.DTOs;
 using ECommerce.Services.Basket.Interfaces;
 using ECommerce.Shared.DTOs;
+using StackExchange.Redis;
 
 namespace ECommerce.Services.Basket.Services;
 
@@ -24,13 +25,32 @@ public class BasketService : IBasketService
         return Response<BasketDTO>.Success(JsonSerializer.Deserialize<BasketDTO>(existBasket), 200);
     }
 
-    public async Task<Response<bool>> SaveOrUpdate(BasketDTO basketDto)
+    public async Task<Response<bool>> Save(BasketDTO basketDto)
     {
+        var existBasket = await _redisService.GetDb().StringGetAsync(basketDto.UserId);
+
+        if (!String.IsNullOrEmpty(existBasket))
+            return Response<bool>.Fail("Already have a basket", 500);
+        
         var status = await _redisService.GetDb().StringSetAsync(basketDto.UserId, JsonSerializer.Serialize(basketDto));
         
         return status ? 
             Response<bool>.Success(204) : 
-            Response<bool>.Fail("Basket could not save or update", 500);
+            Response<bool>.Fail("Basket could not save", 500);
+    }
+    
+    public async Task<Response<bool>> Update(BasketDTO basketDto)
+    {
+        var existBasket = await _redisService.GetDb().StringGetAsync(basketDto.UserId);
+
+        if (String.IsNullOrEmpty(existBasket))
+            return Response<bool>.Fail("Basket not found", 500);
+        
+        var status = await _redisService.GetDb().StringSetAsync(basketDto.UserId, JsonSerializer.Serialize(basketDto));
+        
+        return status ? 
+            Response<bool>.Success(204) : 
+            Response<bool>.Fail("Basket could not update", 500);
     }
 
     public async Task<Response<bool>> Delete(string userId)
