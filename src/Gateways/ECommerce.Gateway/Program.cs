@@ -1,3 +1,4 @@
+using ECommerce.Gateway.DelegateHandlers;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -5,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
+    builder.Services.AddHttpClient<TokenExchangeDelegateHandler>();
+    
     builder.Services.AddAuthentication().AddJwtBearer("GatewayAuthenticationScheme", options =>
     {
         options.Authority = builder.Configuration["IdentityServerURL"];
@@ -16,7 +19,7 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     config.AddJsonFile($"configuration.{env.EnvironmentName.ToLower()}.json").AddEnvironmentVariables();
 });
 
-builder.Services.AddOcelot();
+builder.Services.AddOcelot().AddDelegatingHandler<TokenExchangeDelegateHandler>();
 
 var app = builder.Build();
 
