@@ -5,6 +5,7 @@ using ECommerce.Services.Catalog.Interfaces;
 using ECommerce.Services.Catalog.Mapping;
 using ECommerce.Services.Catalog.Models;
 using ECommerce.Services.Catalog.Services;
+using MassTransit;
 using Moq;
 
 namespace ECommerce.Services.Catalog.UnitTests.Services;
@@ -14,6 +15,7 @@ public class CourseServiceTests
     private readonly CourseService _sut;
     private readonly Mock<IMongoDbClient<Course>> _courseMongoDbClientMock = new Mock<IMongoDbClient<Course>>();
     private readonly Mock<IMongoDbClient<Category>> _categoryMongoDbClientMock = new Mock<IMongoDbClient<Category>>();
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock = new Mock<IPublishEndpoint>();
     private readonly IMapper _mapper;
 
     public CourseServiceTests()
@@ -25,7 +27,7 @@ public class CourseServiceTests
 
         _mapper = mappingConfig.CreateMapper();
 
-        _sut = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object));
+        _sut = new CourseService(_mapper, _courseMongoDbClientMock.Object, new CategoryService(_mapper, _categoryMongoDbClientMock.Object), _publishEndpointMock.Object);
     }
 
     #region GetAllAsync
