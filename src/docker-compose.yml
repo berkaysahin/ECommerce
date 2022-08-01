@@ -26,6 +26,11 @@ services:
     build:
       context: .
       dockerfile: Services/Basket/ECommerce.Services.Basket/Dockerfile
+  photostock.api:
+    image: photostock_api_image
+    build:
+      context: .
+      dockerfile: Services/PhotoStock/ECommerce.Services.PhotoStock/Dockerfile
 volumes:
   catalogdb_volume:
   discountdb_volume:
