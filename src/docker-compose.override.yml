@@ -94,3 +94,13 @@ services:
       - type: bind
         source: /Users/berkaysahin/Desktop/photos
         target: /app/wwwroot/photos
+  discount.api:
+    container_name: discount.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - IdentityServerURL:http://identityserver.api:5001
+      - "ConnectionStrings:PostgreSql=User ID=admin; Password=AdminPass123.; Server=discountdb; Port=5432; Database=Discount; Integrated Security=true; Pooling=true"
+    ports:
+      - "5014:80"
+    depends_on:
+      - discountdb
