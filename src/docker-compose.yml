@@ -46,6 +46,11 @@ services:
     build:
       context: .
       dockerfile: Services/Order/ECommerce.Services.Order.API/Dockerfile
+  gateway.api:
+    image: gateway_api_image
+    build:
+      context: .
+      dockerfile: Gateways/ECommerce.Gateway/Dockerfile
 volumes:
   catalogdb_volume:
   discountdb_volume:
