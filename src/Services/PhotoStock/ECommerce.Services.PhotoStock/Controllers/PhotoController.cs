@@ -32,6 +32,7 @@ public class PhotoController : CustomBaseController
         return CreateActionResultInstance(Response<PhotoDTO>.Success(photoDto, 200));
     }
 
+    [HttpDelete]
     public IActionResult PhotoDelete(string photoUrl)
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/photos", photoUrl);
